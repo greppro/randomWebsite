@@ -1,0 +1,104 @@
+.roll-call-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.roll-call-container h1 {
+  text-align: center;
+  color: var(--secondary-color);
+  margin-bottom: 2rem;
+}
+
+.input-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.input-section input {
+  width: 200px;
+}
+
+.control-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.result-section {
+  text-align: center;
+  margin: 2rem 0;
+  min-height: 100px;
+}
+
+.selected-student {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  font-weight: bold;
+  padding: 1rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+}
+
+.selected-student.rolling {
+  animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.student-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.student-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.student-item.selected {
+  background: var(--primary-color);
+  color: white;
+}
+
+.student-item .remove-button {
+  background: #ff4757;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+.student-item .remove-button:hover {
+  background: #ff6b81;
+}
+
+.student-item.selected .remove-button {
+  background: #ff6b81;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background-color: #ccc;
+} 

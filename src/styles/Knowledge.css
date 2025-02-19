@@ -1,0 +1,126 @@
+.knowledge-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.knowledge-container h1 {
+  text-align: center;
+  color: var(--secondary-color);
+  margin-bottom: 2rem;
+}
+
+.filter-section {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.filter-section select {
+  width: 200px;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+}
+
+.control-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.result-section {
+  text-align: center;
+  margin: 2rem 0;
+  min-height: 100px;
+}
+
+.selected-point {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  font-weight: bold;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  max-width: 600px;
+}
+
+.selected-point.rolling {
+  animation: rotate 0.8s infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+.knowledge-list {
+  display: grid;
+  gap: 2rem;
+}
+
+.subject-group {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subject-group.hidden {
+  display: none;
+}
+
+.subject-group h2 {
+  color: var(--secondary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+}
+
+.chapter-group {
+  margin-bottom: 1.5rem;
+}
+
+.chapter-group.hidden {
+  display: none;
+}
+
+.chapter-group h3 {
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+.points-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.point-item {
+  background: var(--background-color);
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.point-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background-color: #ccc;
+} 

@@ -1,0 +1,59 @@
+.poetry-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.poetry-container h1 {
+  text-align: center;
+  color: var(--secondary-color);
+  margin-bottom: 2rem;
+}
+
+.back-button {
+  display: inline-block;
+  margin-bottom: 2rem;
+  text-decoration: none;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.poem-display {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.poem-display h2 {
+  color: var(--secondary-color);
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+}
+
+.poem-display .author {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.poem-content {
+  font-size: 1.2rem;
+  line-height: 2;
+}
+
+.poem-content p {
+  margin: 0.5rem 0;
+} 
