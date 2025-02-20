@@ -27,6 +27,11 @@ const features = [
     title: '自定义随机',
     description: '通过Excel自定义随机内容',
     path: '/custom-random'
+  },
+  {
+    title: '抽奖系统',
+    description: '支持多人同时抽取的抽奖工具',
+    path: '/lottery'
   }
 ];
 
