@@ -1,25 +1,40 @@
 .poetry-container {
+  min-height: 100vh;
+  background-color: #f7f1e3;
+  display: flex;
+  flex-direction: column;
+}
+
+.poetry-content {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
+  width: 100%;
+  flex: 1;
 }
 
 .poetry-container h1 {
   text-align: center;
-  color: var(--secondary-color);
+  color: #8b4513;
   margin-bottom: 2rem;
+  font-family: "楷体", KaiTi, serif;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .back-button {
   display: inline-block;
   margin-bottom: 2rem;
   text-decoration: none;
-  color: var(--primary-color);
+  color: #8b4513;
   font-weight: 500;
+  font-family: "楷体", KaiTi, serif;
+  transition: all 0.3s ease;
 }
 
 .back-button:hover {
-  text-decoration: underline;
+  color: #a0522d;
+  transform: translateX(-5px);
 }
 
 .controls {
@@ -29,29 +44,91 @@
   justify-content: center;
 }
 
+.controls button {
+  background-color: #8b4513;
+  color: #f7f1e3;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  font-family: "楷体", KaiTi, serif;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.controls button:hover {
+  background-color: #a0522d;
+  transform: translateY(-2px);
+}
+
+.controls button.rolling {
+  background-color: #cd853f;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
 .poem-display {
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: all 0.3s ease;
+}
+
+.poem-display.rolling {
+  animation: fadeInOut 0.4s infinite;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+.poem-paper {
+  background-color: #fff9e6;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  margin: 2rem auto;
+  max-width: 600px;
+  border: 1px solid #d4b895;
+}
+
+.poem-paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: linear-gradient(to right, #d4b895 50%, transparent 50%);
+  background-size: 4px 100%;
+  opacity: 0.3;
+  border-radius: 8px 8px 0 0;
 }
 
 .poem-display h2 {
-  color: var(--secondary-color);
+  color: #8b4513;
   margin-bottom: 0.5rem;
   font-size: 1.8rem;
+  font-family: "楷体", KaiTi, serif;
 }
 
 .poem-display .author {
-  color: #666;
+  color: #a0522d;
   margin-bottom: 1.5rem;
   font-style: italic;
+  font-family: "楷体", KaiTi, serif;
 }
 
 .poem-content {
   font-size: 1.2rem;
   line-height: 2;
+  font-family: "楷体", KaiTi, serif;
+  color: #4a4a4a;
 }
 
 .poem-content p {

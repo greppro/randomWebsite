@@ -19,46 +19,82 @@ const poems = [
 
 const Poetry: React.FC = () => {
   const [currentPoem, setCurrentPoem] = useState<typeof poems[0] | null>(null);
-  const [showFullPoem, setShowFullPoem] = useState(true);
+  const [showMode, setShowMode] = useState<'full' | 'first' | 'second'>('full');
+  const [isRolling, setIsRolling] = useState(false);
+  const [rollInterval, setRollInterval] = useState<NodeJS.Timeout | null>(null);
 
-  const getRandomPoem = () => {
-    const randomIndex = Math.floor(Math.random() * poems.length);
-    setCurrentPoem(poems[randomIndex]);
+  const startRolling = () => {
+    setIsRolling(true);
+    const interval = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * poems.length);
+      setCurrentPoem(poems[randomIndex]);
+    }, 200);
+    setRollInterval(interval);
+  };
+
+  const stopRolling = () => {
+    if (rollInterval) {
+      clearInterval(rollInterval);
+      setRollInterval(null);
+    }
+    const finalIndex = Math.floor(Math.random() * poems.length);
+    setCurrentPoem(poems[finalIndex]);
+    setIsRolling(false);
   };
 
   const togglePoemDisplay = () => {
-    setShowFullPoem(!showFullPoem);
+    setShowMode(current => {
+      if (current === 'full') return 'first';
+      if (current === 'first') return 'second';
+      return 'full';
+    });
+  };
+
+  const getDisplayContent = () => {
+    if (!currentPoem) return [];
+    switch (showMode) {
+      case 'first':
+        return currentPoem.content.filter((_, index) => index % 2 === 0);
+      case 'second':
+        return currentPoem.content.filter((_, index) => index % 2 === 1);
+      default:
+        return currentPoem.content;
+    }
   };
 
   return (
     <div className="poetry-container">
-      <Link to="/" className="back-button">返回首页</Link>
-      <h1>随机古诗词</h1>
-      
-      <div className="controls">
-        <button onClick={getRandomPoem}>随机抽取</button>
-        <button onClick={togglePoemDisplay}>
-          {showFullPoem ? '仅显示上句' : '显示全文'}
-        </button>
-      </div>
-
-      {currentPoem && (
-        <div className="poem-display">
-          <h2>{currentPoem.title}</h2>
-          <p className="author">{currentPoem.author}</p>
-          <div className="poem-content">
-            {showFullPoem
-              ? currentPoem.content.map((line, index) => (
-                  <p key={index}>{line}</p>
-                ))
-              : currentPoem.content
-                  .filter((_, index) => index % 2 === 0)
-                  .map((line, index) => (
-                    <p key={index}>{line}</p>
-                  ))}
-          </div>
+      <div className="poetry-content">
+        <Link to="/" className="back-button">返回首页</Link>
+        <h1>随机古诗词</h1>
+        
+        <div className="controls">
+          <button 
+            onClick={isRolling ? stopRolling : startRolling}
+            className={isRolling ? 'rolling' : ''}
+          >
+            {isRolling ? '停止随机' : '开始随机'}
+          </button>
+          <button onClick={togglePoemDisplay}>
+            {showMode === 'full' ? '仅显示上句' : 
+             showMode === 'first' ? '仅显示下句' : '显示全文'}
+          </button>
         </div>
-      )}
+
+        {currentPoem && (
+          <div className={`poem-display ${isRolling ? 'rolling' : ''}`}>
+            <div className="poem-paper">
+              <h2>{currentPoem.title}</h2>
+              <p className="author">{currentPoem.author}</p>
+              <div className="poem-content">
+                {getDisplayContent().map((line, index) => (
+                  <p key={index}>{line}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
