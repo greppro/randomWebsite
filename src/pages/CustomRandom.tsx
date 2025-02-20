@@ -19,8 +19,8 @@ const CustomRandom: React.FC = () => {
         const worksheet = workbook.Sheets[firstSheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
-        // 过滤掉空值
-        const items = jsonData.flat().filter(item => item);
+        // 过滤掉空值并确保类型为字符串
+        const items = jsonData.flat().filter(item => item).map(item => String(item));
         setData(items);
         message.success('Excel文件上传成功！');
       } catch (error) {

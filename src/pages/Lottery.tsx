@@ -61,7 +61,6 @@ const Lottery: React.FC = () => {
     // 快速切换显示不同选项的动画效果
     let count = 0;
     const maxCount = 20; // 动画循环次数
-    const tempSelected: string[] = [];
     
     const interval = setInterval(() => {
       // 随机选择指定数量的人

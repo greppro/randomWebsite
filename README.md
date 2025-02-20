@@ -2,6 +2,10 @@
 
 一个基于 React + TypeScript 开发的随机抽选系统，包含多个实用的随机选择功能。
 
+## 在线演示
+
+[在线体验地址](https://random.grep.pro)
+
 ## 功能特点
 
 ### 1. 随机古诗词
@@ -51,32 +55,54 @@
 - Vite 5
 - XLSX（Excel 处理）
 - CSS Modules
+- Docker
 
 ## 开始使用
 
+### 方式一：本地开发
+
 1. 克隆项目
-\`\`\`bash
+```bash
 git clone [项目地址]
-\`\`\`
+```
 
 2. 安装依赖
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
 3. 启动开发服务器
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
 4. 构建生产版本
-\`\`\`bash
+```bash
 npm run build
-\`\`\`
+```
+
+### 方式二：Docker 部署
+
+1. 构建镜像
+```bash
+docker build -t random-website .
+```
+
+2. 运行容器
+```bash
+docker run -d -p 80:80 random-website
+```
+
+3. 使用 Docker Compose（推荐）
+```bash
+docker-compose up -d
+```
+
+访问 http://localhost 即可使用
 
 ## 项目结构
 
-\`\`\`
+```
 src/
   ├── pages/          # 页面组件
   │   ├── Home.tsx    # 首页
@@ -90,7 +116,7 @@ src/
   │   └── Knowledge.css# 知识点样式
   ├── App.tsx         # 应用入口
   └── main.tsx        # 主入口文件
-\`\`\`
+```
 
 ## 开发说明
 
