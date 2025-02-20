@@ -7,6 +7,7 @@ const Poetry = React.lazy(() => import('./pages/Poetry'));
 const RollCall = React.lazy(() => import('./pages/RollCall'));
 const Food = React.lazy(() => import('./pages/Food'));
 const Knowledge = React.lazy(() => import('./pages/Knowledge'));
+const CustomRandom = React.lazy(() => import('./pages/CustomRandom'));
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
         <Route path="/roll-call" element={<RollCall />} />
         <Route path="/food" element={<Food />} />
         <Route path="/knowledge" element={<Knowledge />} />
+        <Route path="/custom-random" element={<CustomRandom />} />
       </Routes>
     </React.Suspense>
   );

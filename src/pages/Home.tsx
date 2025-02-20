@@ -22,6 +22,11 @@ const features = [
     title: '知识点抽查',
     description: '随机抽取知识点进行复习',
     path: '/knowledge'
+  },
+  {
+    title: '自定义随机',
+    description: '通过Excel自定义随机内容',
+    path: '/custom-random'
   }
 ];
 
