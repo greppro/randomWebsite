@@ -210,7 +210,7 @@ const RollCall: React.FC = () => {
                     onClick={() => removeStudent(student.id)}
                     className="remove-button"
                   >
-                    删除
+                    x
                   </button>
                 </div>
               ))}

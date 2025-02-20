@@ -28,7 +28,7 @@ const features = [
 const Home: React.FC = () => {
   return (
     <div className="home-container">
-      <h1 className="home-title">随机抽选系统</h1>
+      <h1 className="home-title">点兵点将</h1>
       <div className="features-grid">
         {features.map((feature, index) => (
           <Link to={feature.path} key={index} className="feature-card">
