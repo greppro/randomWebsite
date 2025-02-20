@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import VisitCounter from './components/VisitCounter';
 
 // 懒加载其他页面组件
 const Poetry = React.lazy(() => import('./pages/Poetry'));
@@ -22,6 +23,7 @@ const App: React.FC = () => {
         <Route path="custom-random" element={<CustomRandom />} />
         <Route path="lottery" element={<Lottery />} />
       </Routes>
+      <VisitCounter />
     </React.Suspense>
   );
 };
