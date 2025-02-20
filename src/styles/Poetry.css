@@ -1,6 +1,6 @@
 .poetry-container {
   min-height: 100vh;
-  background-color: #f7f1e3;
+  background-color: var(--background-color);
   display: flex;
   flex-direction: column;
 }
@@ -15,26 +15,11 @@
 
 .poetry-container h1 {
   text-align: center;
-  color: #8b4513;
+  color: var(--secondary-color);
   margin-bottom: 2rem;
   font-family: "楷体", KaiTi, serif;
   font-size: 2.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.back-button {
-  display: inline-block;
-  margin-bottom: 2rem;
-  text-decoration: none;
-  color: #8b4513;
-  font-weight: 500;
-  font-family: "楷体", KaiTi, serif;
-  transition: all 0.3s ease;
-}
-
-.back-button:hover {
-  color: #a0522d;
-  transform: translateX(-5px);
 }
 
 .controls {
@@ -45,8 +30,8 @@
 }
 
 .controls button {
-  background-color: #8b4513;
-  color: #f7f1e3;
+  background-color: var(--primary-color);
+  color: white;
   border: none;
   padding: 0.8rem 1.5rem;
   border-radius: 4px;
@@ -56,12 +41,12 @@
 }
 
 .controls button:hover {
-  background-color: #a0522d;
+  background-color: #357abd;
   transform: translateY(-2px);
 }
 
 .controls button.rolling {
-  background-color: #cd853f;
+  background-color: #357abd;
   animation: pulse 1s infinite;
 }
 

@@ -44,4 +44,35 @@ input, select {
 input:focus, select:focus {
   outline: none;
   border-color: var(--primary-color);
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #f8f9fa;
+  color: #2c3e50;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+.back-button:before {
+  content: "←";
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.back-button:hover {
+  background-color: #e9ecef;
+  transform: translateX(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 } 
