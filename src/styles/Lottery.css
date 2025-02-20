@@ -15,10 +15,12 @@
 
 .lottery-container h1 {
   text-align: center;
-  color: var(--secondary-color);
+  color: #2196f3;
   margin-bottom: 2rem;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  padding-top: 3rem;
+  margin-top: 0;
 }
 
 .back-button {
