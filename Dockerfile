@@ -5,6 +5,7 @@ WORKDIR /app
 
 # 复制 package.json 和 package-lock.json
 COPY package*.json ./
+COPY tsconfig*.json ./
 
 # 安装依赖
 RUN npm ci
@@ -12,17 +13,42 @@ RUN npm ci
 # 复制源代码
 COPY . .
 
-# 构建应用
+# 构建前端应用
 RUN npm run build
 
+# 编译后端 TypeScript
+RUN npm run build:server
+
 # 生产阶段
-FROM nginx:alpine
+FROM node:18-alpine
 
-# 从构建阶段复制构建产物到 nginx 目录
-COPY --from=builder /app/dist /usr/share/nginx/html
+WORKDIR /app
 
-# 暴露 80 端口
-EXPOSE 80
+# 创建必要的目录
+RUN mkdir -p /app/data /app/public /app/server
 
-# 启动 nginx
-CMD ["nginx", "-g", "daemon off;"] 
+# 复制构建产物和必要文件
+COPY --from=builder /app/dist /app/public
+COPY --from=builder /app/dist-server /app/server
+COPY --from=builder /app/package*.json /app/
+COPY --from=builder /app/data/visitStats.json /app/data/
+
+# 安装生产环境依赖
+RUN npm ci --only=production
+
+# 设置环境变量
+ENV NODE_ENV=production
+
+# 设置目录权限
+RUN chown -R node:node /app && \
+    chmod -R 755 /app && \
+    chmod -R 777 /app/data
+
+# 切换到非 root 用户
+USER node
+
+# 暴露端口
+EXPOSE 3000
+
+# 启动服务
+CMD ["node", "./server/index.js"] 

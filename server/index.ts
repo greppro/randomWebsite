@@ -10,7 +10,16 @@ app.use(cors());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const STATS_FILE = path.join(__dirname, '../data/visitStats.json');
+const STATS_FILE = path.resolve(process.cwd(), 'data/visitStats.json');
+
+// 静态文件服务
+app.use(express.static(path.resolve(process.cwd(), 'public')));
+
+// 确保数据目录存在
+const dataDir = path.resolve(process.cwd(), 'data');
+if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+}
 
 // 确保统计文件存在
 if (!fs.existsSync(STATS_FILE)) {
@@ -61,6 +70,11 @@ app.get('/api/stats', (req, res) => {
         totalVisits: stats.totalVisits,
         todayVisits: stats.dailyVisits[today] || 0
     });
+});
+
+// 所有其他路由都返回 index.html（支持前端路由）
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(process.cwd(), 'public/index.html'));
 });
 
 const PORT = process.env.PORT || 3000;

@@ -45,7 +45,8 @@ export default function VisitCounter() {
                     <span>{stats.totalVisits}</span>
                 </div>
             </div>
-            <style jsx>{`
+            <style>
+                {`
                 .visit-counter {
                     position: fixed;
                     bottom: 20px;
@@ -74,7 +75,8 @@ export default function VisitCounter() {
                     font-weight: 500;
                     color: #4a90e2;
                 }
-            `}</style>
+                `}
+            </style>
         </div>
     );
 } 

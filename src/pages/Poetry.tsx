@@ -21,7 +21,7 @@ const Poetry: React.FC = () => {
   const [currentPoem, setCurrentPoem] = useState<typeof poems[0] | null>(null);
   const [showMode, setShowMode] = useState<'full' | 'first' | 'second'>('full');
   const [isRolling, setIsRolling] = useState(false);
-  const [rollInterval, setRollInterval] = useState<number | null>(null);
+  const [rollInterval, setRollInterval] = useState<NodeJS.Timeout | null>(null);
 
   const startRolling = () => {
     setIsRolling(true);
