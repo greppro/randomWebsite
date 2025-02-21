@@ -10,6 +10,7 @@ const Food = React.lazy(() => import('./pages/Food'));
 const Knowledge = React.lazy(() => import('./pages/Knowledge'));
 const CustomRandom = React.lazy(() => import('./pages/CustomRandom'));
 const Lottery = React.lazy(() => import('./pages/Lottery'));
+const CoinFlipPage = React.lazy(() => import('./pages/CoinFlipPage'));
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
         <Route path="knowledge" element={<Knowledge />} />
         <Route path="custom-random" element={<CustomRandom />} />
         <Route path="lottery" element={<Lottery />} />
+        <Route path="coin-flip" element={<CoinFlipPage />} />
       </Routes>
       <VisitCounter />
     </React.Suspense>

@@ -32,6 +32,11 @@ const features = [
     title: '抽奖系统',
     description: '支持多人同时抽取的抽奖工具',
     path: '/lottery'
+  },
+  {
+    title: '抛硬币',
+    description: '在犹豫不决时，让命运做选择',
+    path: '/coin-flip'
   }
 ];
 
