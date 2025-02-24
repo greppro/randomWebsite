@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Upload, message, Card, List, InputNumber } from 'antd';
-import { UploadOutlined, RedoOutlined } from '@ant-design/icons';
+import { Button, Upload, message, InputNumber, Modal } from 'antd';
+import { UploadOutlined, RedoOutlined, FullscreenOutlined, FullscreenExitOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import '../styles/Lottery.css';
 import { Link } from 'react-router-dom';
@@ -10,12 +10,21 @@ interface LotteryPerson {
   selected: boolean;
 }
 
+interface WinnerRecord {
+  names: string[];
+  timestamp: string;
+  drawNo: number;
+}
+
 const Lottery: React.FC = () => {
   const [people, setPeople] = useState<LotteryPerson[]>([]);
   const [selectedPeople, setSelectedPeople] = useState<string[]>([]);
   const [isRolling, setIsRolling] = useState(false);
   const [drawCount, setDrawCount] = useState<number>(1);
   const [availablePeople, setAvailablePeople] = useState<LotteryPerson[]>([]);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [winnerRecords, setWinnerRecords] = useState<WinnerRecord[]>([]);
+  const [drawNumber, setDrawNumber] = useState(0);
 
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
@@ -26,7 +35,6 @@ const Lottery: React.FC = () => {
         const worksheet = workbook.Sheets[firstSheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
-        // 过滤掉空值和表头
         const names = jsonData.slice(1).flat().filter(item => item);
         const newPeople = names.map(name => ({
           name: String(name),
@@ -36,6 +44,8 @@ const Lottery: React.FC = () => {
         setPeople(newPeople);
         setAvailablePeople(newPeople);
         setSelectedPeople([]);
+        setWinnerRecords([]);
+        setDrawNumber(0);
         message.success('名单上传成功！');
       } catch (error) {
         message.error('文件处理失败，请确保使用正确的模板格式！');
@@ -58,12 +68,10 @@ const Lottery: React.FC = () => {
     
     setIsRolling(true);
     
-    // 快速切换显示不同选项的动画效果
     let count = 0;
-    const maxCount = 20; // 动画循环次数
+    const maxCount = 20;
     
     const interval = setInterval(() => {
-      // 随机选择指定数量的人
       const randomPeople = [];
       const tempAvailable = [...availablePeople];
       for (let i = 0; i < drawCount; i++) {
@@ -76,8 +84,7 @@ const Lottery: React.FC = () => {
       
       if (count >= maxCount) {
         clearInterval(interval);
-        // 最终选择
-        const finalSelected = [];
+        const finalSelected: string[] = [];
         const newAvailable = [...availablePeople];
         for (let i = 0; i < drawCount; i++) {
           const randomIndex = Math.floor(Math.random() * newAvailable.length);
@@ -87,6 +94,15 @@ const Lottery: React.FC = () => {
         setSelectedPeople(finalSelected);
         setAvailablePeople(newAvailable);
         setIsRolling(false);
+        
+        // 添加中奖记录
+        const currentTime = new Date().toLocaleString();
+        setDrawNumber(prev => prev + 1);
+        setWinnerRecords(prev => [...prev, {
+          names: finalSelected,
+          timestamp: currentTime,
+          drawNo: drawNumber + 1
+        }]);
       }
     }, 100);
   };
@@ -105,9 +121,8 @@ const Lottery: React.FC = () => {
       ['吴十']
     ]);
     
-    // 设置列宽
     const wscols = [
-      {wch: 20}, // 设置列宽
+      {wch: 20},
     ];
     worksheet['!cols'] = wscols;
 
@@ -116,16 +131,71 @@ const Lottery: React.FC = () => {
   };
 
   const handleReset = () => {
-    setAvailablePeople(people);
-    setSelectedPeople([]);
-    message.success('已重置抽奖池！');
+    // 如果有中奖记录，显示确认提示
+    if (winnerRecords.length > 0) {
+      Modal.confirm({
+        title: '确认重置',
+        icon: <ExclamationCircleOutlined />,
+        content: '重置将清空所有中奖记录，是否继续？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk() {
+          setAvailablePeople(people);
+          setSelectedPeople([]);
+          setWinnerRecords([]);
+          setDrawNumber(0);
+          message.success('已重置抽奖池和中奖记录！');
+        }
+      });
+    } else {
+      setAvailablePeople(people);
+      setSelectedPeople([]);
+      setWinnerRecords([]);
+      setDrawNumber(0);
+      message.success('已重置抽奖池！');
+    }
   };
 
-  return (
-    <div className="lottery-container">
-      <Link to="/" className="back-button">返回首页</Link>
-      <h1>抽奖系统</h1>
-      
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
+  };
+
+  const renderContent = () => {
+    if (isFullscreen) {
+      return (
+        <div className="fullscreen-mode">
+          <Button 
+            icon={<FullscreenExitOutlined />} 
+            onClick={toggleFullscreen}
+            className="exit-fullscreen-btn"
+          >
+            退出全屏
+          </Button>
+          <div className="fullscreen-content">
+            {selectedPeople.length > 0 && (
+              <div className={`selected-items ${isRolling ? 'rolling' : ''}`}>
+                {selectedPeople.map((name, index) => (
+                  <div key={index} className="selected-item">
+                    {name}
+                  </div>
+                ))}
+              </div>
+            )}
+            <Button 
+              type="primary" 
+              size="large"
+              onClick={handleDraw} 
+              disabled={isRolling || availablePeople.length === 0}
+              className="fullscreen-draw-btn"
+            >
+              {isRolling ? '抽取中...' : '开始抽奖'}
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
       <div className="content-section">
         <div className="upload-section">
           <Button onClick={downloadTemplate} style={{ marginRight: 16 }}>
@@ -150,6 +220,13 @@ const Lottery: React.FC = () => {
               onChange={(value) => setDrawCount(value || 1)}
               disabled={isRolling}
             />
+            <Button 
+              icon={<FullscreenOutlined />}
+              onClick={toggleFullscreen}
+              style={{ marginLeft: 16 }}
+            >
+              全屏抽奖
+            </Button>
           </div>
           <div className="buttons">
             <Button 
@@ -162,7 +239,7 @@ const Lottery: React.FC = () => {
             <Button 
               icon={<RedoOutlined />}
               onClick={handleReset}
-              disabled={isRolling || people.length === availablePeople.length}
+              disabled={isRolling || (people.length === availablePeople.length && winnerRecords.length === 0)}
             >
               重置
             </Button>
@@ -193,24 +270,35 @@ const Lottery: React.FC = () => {
           </div>
         </div>
 
-        {people.length > 0 && (
-          <Card type="inner" title="参与人员名单" className="people-list">
-            <List
-              size="small"
-              bordered
-              dataSource={people}
-              renderItem={item => (
-                <List.Item className={!availablePeople.find(p => p.name === item.name) ? 'selected' : ''}>
-                  {item.name}
-                  {!availablePeople.find(p => p.name === item.name) && 
-                    <span className="selected-tag">已抽取</span>
-                  }
-                </List.Item>
-              )}
-            />
-          </Card>
+        {winnerRecords.length > 0 && (
+          <div className="winner-records">
+            <h2>中奖记录</h2>
+            <div className="records-list">
+              {winnerRecords.map((record, index) => (
+                <div key={index} className="record-item">
+                  <div className="record-header">
+                    <span className="draw-no">第 {record.drawNo} 轮</span>
+                    <span className="winner-time">{record.timestamp}</span>
+                  </div>
+                  <div className="winner-names">
+                    {record.names.map((name, nameIndex) => (
+                      <span key={nameIndex} className="winner-name">{name}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
+    );
+  };
+
+  return (
+    <div className={`lottery-container ${isFullscreen ? 'fullscreen' : ''}`}>
+      {!isFullscreen && <Link to="/" className="back-button">返回首页</Link>}
+      {!isFullscreen && <h1>抽奖系统</h1>}
+      {renderContent()}
     </div>
   );
 };
