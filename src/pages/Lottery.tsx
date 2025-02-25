@@ -26,6 +26,8 @@ const Lottery: React.FC = () => {
   const [winnerRecords, setWinnerRecords] = useState<WinnerRecord[]>([]);
   const [drawNumber, setDrawNumber] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [rollingSpeed, setRollingSpeed] = useState(100); // 控制抽奖滚动速度
+  const [confettiActive, setConfettiActive] = useState(false); // 控制彩带效果
 
   // 监听全屏变化
   useEffect(() => {
@@ -131,11 +133,13 @@ const Lottery: React.FC = () => {
     
     setIsRolling(true);
     setSelectedPeople([]); // 清空之前的选择
+    setConfettiActive(false); // 重置彩带效果
     
     let count = 0;
-    const maxCount = 20;
+    const maxCount = 30; // 增加滚动次数，让效果更明显
+    let currentSpeed = rollingSpeed;
     
-    const interval = setInterval(() => {
+    const roll = () => {
       const randomPeople = [];
       const tempAvailable = [...availablePeople];
       for (let i = 0; i < drawCount; i++) {
@@ -147,8 +151,17 @@ const Lottery: React.FC = () => {
       setSelectedPeople(randomPeople);
       count++;
       
+      // 逐渐减慢滚动速度，增强期待感
+      if (count < maxCount / 2) {
+        currentSpeed = rollingSpeed;
+      } else if (count < maxCount * 0.8) {
+        currentSpeed = rollingSpeed * 1.5;
+      } else {
+        currentSpeed = rollingSpeed * 2.5;
+      }
+      
       if (count >= maxCount) {
-        clearInterval(interval);
+        // 最终结果
         const finalSelected: string[] = [];
         const newAvailable = [...availablePeople];
         for (let i = 0; i < drawCount; i++) {
@@ -160,6 +173,7 @@ const Lottery: React.FC = () => {
         setSelectedPeople(finalSelected);
         setAvailablePeople(newAvailable);
         setIsRolling(false);
+        setConfettiActive(true); // 显示彩带效果
         
         // 添加中奖记录
         const currentTime = new Date().toLocaleString();
@@ -169,8 +183,12 @@ const Lottery: React.FC = () => {
           timestamp: currentTime,
           drawNo: drawNumber + 1
         }]);
+      } else {
+        setTimeout(roll, currentSpeed);
       }
-    }, 100);
+    };
+    
+    roll(); // 开始滚动
   };
 
   const downloadTemplate = () => {
@@ -197,34 +215,20 @@ const Lottery: React.FC = () => {
   };
 
   const handleReset = () => {
-    // 如果有中奖记录，显示确认提示
-    if (winnerRecords.length > 0) {
-      Modal.confirm({
-        title: '确认重置',
-        icon: <ExclamationCircleOutlined />,
-        content: '重置将清空所有中奖记录，是否继续？',
-        okText: '确认',
-        cancelText: '取消',
-        onOk() {
-          setAvailablePeople(people);
-          setSelectedPeople([]);
-          setWinnerRecords([]);
-          setDrawNumber(0);
-          message.success('已重置抽奖池和中奖记录！');
-        }
-      });
-    } else {
-      setAvailablePeople(people);
-      setSelectedPeople([]);
-      setWinnerRecords([]);
-      setDrawNumber(0);
-      message.success('已重置抽奖池！');
-    }
+    // 重置所有已抽取的人员
+    setAvailablePeople([...people]);
+    // 清空中奖记录
+    setWinnerRecords([]);
+    // 清空当前选中的人员
+    setSelectedPeople([]);
+    // 停止滚动
+    setIsRolling(false);
+    message.success('已重置抽奖数据');
   };
 
   const getSelectedItemsClassName = () => {
     if (!selectedPeople.length) return '';
-    const baseClass = isRolling ? 'rolling' : '';
+    const baseClass = isRolling ? 'rolling' : confettiActive ? 'winner' : '';
     
     if (selectedPeople.length === 1) return `single ${baseClass}`;
     if (selectedPeople.length === 2) return `double ${baseClass}`;
@@ -232,10 +236,32 @@ const Lottery: React.FC = () => {
     return `multiple ${baseClass}`;
   };
 
+  // 渲染彩带效果
+  const renderConfetti = () => {
+    if (!confettiActive) return null;
+    
+    return (
+      <div className="confetti-container">
+        {Array.from({ length: 50 }).map((_, i) => (
+          <div 
+            key={i} 
+            className="confetti" 
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              backgroundColor: `hsl(${Math.random() * 360}, 100%, 50%)`
+            }}
+          />
+        ))}
+      </div>
+    );
+  };
+
   const renderContent = () => {
     if (isFullscreen) {
       return (
         <div className="fullscreen-mode">
+          {renderConfetti()}
           <Button 
             icon={<FullscreenExitOutlined />} 
             onClick={handleExitFullscreen}
@@ -244,22 +270,33 @@ const Lottery: React.FC = () => {
             退出全屏
           </Button>
           <div className="fullscreen-content">
+            <h1 className="fullscreen-title">幸运抽奖</h1>
+            
             <div className={`selected-items ${getSelectedItemsClassName()}`}>
-              {selectedPeople.map((name, index) => (
-                <div key={index} className="selected-item">
-                  {name}
+              {selectedPeople.length > 0 ? (
+                selectedPeople.map((name, index) => (
+                  <div key={index} className="selected-item">
+                    {name}
+                  </div>
+                ))
+              ) : (
+                <div className="selected-item waiting-item">
+                  <span>等待抽取</span>
                 </div>
-              ))}
+              )}
             </div>
-            <Button 
-              type="primary"
-              size="large"
-              onClick={handleDraw}
-              disabled={isRolling || availablePeople.length === 0}
-              className="fullscreen-draw-btn"
-            >
-              {isRolling ? '抽取中...' : '开始抽奖'}
-            </Button>
+            
+            <div className="fullscreen-controls">
+              <Button 
+                type="primary"
+                size="large"
+                onClick={handleDraw}
+                disabled={isRolling || availablePeople.length === 0}
+                className="fullscreen-draw-btn"
+              >
+                {isRolling ? '抽取中...' : '开始抽奖'}
+              </Button>
+            </div>
           </div>
         </div>
       );
