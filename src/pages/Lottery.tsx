@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Upload, message, InputNumber, Modal } from 'antd';
 import { UploadOutlined, RedoOutlined, FullscreenOutlined, FullscreenExitOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
@@ -25,6 +25,21 @@ const Lottery: React.FC = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [winnerRecords, setWinnerRecords] = useState<WinnerRecord[]>([]);
   const [drawNumber, setDrawNumber] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // 监听全屏变化
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, [isFullscreen]);
 
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
@@ -55,18 +70,67 @@ const Lottery: React.FC = () => {
     return false;
   };
 
+  const handleExitFullscreen = () => {
+    // 直接使用简单的方法退出全屏并更新状态
+    if (document.exitFullscreen) {
+      document.exitFullscreen().catch(err => console.error('退出全屏失败:', err));
+    }
+    setIsFullscreen(false); // 无论成功与否，都将状态设置为非全屏
+  };
+
+  const handleEnterFullscreen = () => {
+    if (!containerRef.current) return;
+    
+    try {
+      // 尝试进入全屏模式
+      const element = containerRef.current;
+      if (element.requestFullscreen) {
+        element.requestFullscreen().then(() => {
+          setIsFullscreen(true);
+        }).catch(err => {
+          console.error('进入全屏失败:', err);
+          message.error('进入全屏模式失败');
+        });
+      } else {
+        // 如果API不支持，至少可以模拟全屏UI
+        setIsFullscreen(true);
+      }
+    } catch (error) {
+      console.error('全屏操作异常:', error);
+      // 回退方案：仍然切换UI状态
+      setIsFullscreen(true);
+    }
+  };
+
+  const showWarning = (content: string) => {
+    message.destroy();
+    message.warning({
+      content,
+      duration: 2,
+      style: isFullscreen ? {
+        marginTop: '80px'
+      } : undefined
+    });
+  };
+
   const handleDraw = () => {
+    // 检查是否有可抽取的人员
     if (availablePeople.length === 0) {
-      message.warning('没有可抽取的人员！');
+      showWarning('没有可抽取的人员！');
       return;
     }
 
+    // 检查抽取人数是否合法
     if (drawCount > availablePeople.length) {
-      message.warning(`当前只剩${availablePeople.length}人可抽取！`);
+      showWarning(`当前只剩${availablePeople.length}人可抽取！`);
       return;
     }
     
+    // 如果已经在抽奖中，不执行任何操作
+    if (isRolling) return;
+    
     setIsRolling(true);
+    setSelectedPeople([]); // 清空之前的选择
     
     let count = 0;
     const maxCount = 20;
@@ -75,6 +139,7 @@ const Lottery: React.FC = () => {
       const randomPeople = [];
       const tempAvailable = [...availablePeople];
       for (let i = 0; i < drawCount; i++) {
+        if (tempAvailable.length === 0) break;
         const randomIndex = Math.floor(Math.random() * tempAvailable.length);
         randomPeople.push(tempAvailable[randomIndex].name);
         tempAvailable.splice(randomIndex, 1);
@@ -87,6 +152,7 @@ const Lottery: React.FC = () => {
         const finalSelected: string[] = [];
         const newAvailable = [...availablePeople];
         for (let i = 0; i < drawCount; i++) {
+          if (newAvailable.length === 0) break;
           const randomIndex = Math.floor(Math.random() * newAvailable.length);
           finalSelected.push(newAvailable[randomIndex].name);
           newAvailable.splice(randomIndex, 1);
@@ -156,8 +222,14 @@ const Lottery: React.FC = () => {
     }
   };
 
-  const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
+  const getSelectedItemsClassName = () => {
+    if (!selectedPeople.length) return '';
+    const baseClass = isRolling ? 'rolling' : '';
+    
+    if (selectedPeople.length === 1) return `single ${baseClass}`;
+    if (selectedPeople.length === 2) return `double ${baseClass}`;
+    if (selectedPeople.length === 3) return `triple ${baseClass}`;
+    return `multiple ${baseClass}`;
   };
 
   const renderContent = () => {
@@ -166,25 +238,23 @@ const Lottery: React.FC = () => {
         <div className="fullscreen-mode">
           <Button 
             icon={<FullscreenExitOutlined />} 
-            onClick={toggleFullscreen}
+            onClick={handleExitFullscreen}
             className="exit-fullscreen-btn"
           >
             退出全屏
           </Button>
           <div className="fullscreen-content">
-            {selectedPeople.length > 0 && (
-              <div className={`selected-items ${isRolling ? 'rolling' : ''}`}>
-                {selectedPeople.map((name, index) => (
-                  <div key={index} className="selected-item">
-                    {name}
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className={`selected-items ${getSelectedItemsClassName()}`}>
+              {selectedPeople.map((name, index) => (
+                <div key={index} className="selected-item">
+                  {name}
+                </div>
+              ))}
+            </div>
             <Button 
-              type="primary" 
+              type="primary"
               size="large"
-              onClick={handleDraw} 
+              onClick={handleDraw}
               disabled={isRolling || availablePeople.length === 0}
               className="fullscreen-draw-btn"
             >
@@ -222,7 +292,7 @@ const Lottery: React.FC = () => {
             />
             <Button 
               icon={<FullscreenOutlined />}
-              onClick={toggleFullscreen}
+              onClick={handleEnterFullscreen}
               style={{ marginLeft: 16 }}
             >
               全屏抽奖
@@ -248,7 +318,7 @@ const Lottery: React.FC = () => {
 
         {selectedPeople.length > 0 && (
           <div className="result-section">
-            <div className={`selected-items ${isRolling ? 'rolling' : ''}`}>
+            <div className={`selected-items ${getSelectedItemsClassName()}`}>
               {selectedPeople.map((name, index) => (
                 <div key={index} className="selected-item">
                   {name}
@@ -295,7 +365,7 @@ const Lottery: React.FC = () => {
   };
 
   return (
-    <div className={`lottery-container ${isFullscreen ? 'fullscreen' : ''}`}>
+    <div ref={containerRef} className={`lottery-container ${isFullscreen ? 'fullscreen' : ''}`}>
       {!isFullscreen && <Link to="/" className="back-button">返回首页</Link>}
       {!isFullscreen && <h1>抽奖系统</h1>}
       {renderContent()}

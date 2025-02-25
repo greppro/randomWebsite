@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface VisitStats {
     totalVisits: number;
@@ -7,6 +8,10 @@ interface VisitStats {
 
 export default function VisitCounter() {
     const [stats, setStats] = useState<VisitStats>({ totalVisits: 0, todayVisits: 0 });
+    const location = useLocation();
+    const isLotteryPage = location.pathname === '/lottery';
+    const searchParams = new URLSearchParams(location.search);
+    const isLotteryFullscreen = isLotteryPage && searchParams.get('fullscreen') === 'true';
 
     useEffect(() => {
         // 使用 sessionStorage 确保每个会话只记录一次访问
@@ -38,6 +43,10 @@ export default function VisitCounter() {
 
         return () => clearInterval(interval);
     }, []);
+
+    if (isLotteryFullscreen) {
+        return null; // 在抽奖全屏模式下不显示访问计数器
+    }
 
     return (
         <div className="visit-counter">
