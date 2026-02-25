@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Upload, message, InputNumber, Modal } from 'antd';
-import { UploadOutlined, RedoOutlined, FullscreenOutlined, FullscreenExitOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Button, Upload, message, InputNumber } from 'antd';
+import { UploadOutlined, RedoOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import '../styles/Lottery.css';
 import { Link } from 'react-router-dom';
@@ -26,7 +26,7 @@ const Lottery: React.FC = () => {
   const [winnerRecords, setWinnerRecords] = useState<WinnerRecord[]>([]);
   const [drawNumber, setDrawNumber] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [rollingSpeed, setRollingSpeed] = useState(100); // 控制抽奖滚动速度
+  const [rollingSpeed] = useState(100); // 控制抽奖滚动速度（setRollingSpeed 预留扩展）
   const [confettiActive, setConfettiActive] = useState(false); // 控制彩带效果
 
   // 监听全屏变化

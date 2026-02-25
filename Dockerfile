@@ -25,13 +25,12 @@ FROM node:18-alpine
 WORKDIR /app
 
 # 创建必要的目录
-RUN mkdir -p /app/data /app/public /app/server
+RUN mkdir -p /app/data
 
 # 复制构建产物和必要文件
-COPY --from=builder /app/dist /app/public
-COPY --from=builder /app/dist-server /app/server
+COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/dist-server /app/dist-server
 COPY --from=builder /app/package*.json /app/
-COPY --from=builder /app/data/visitStats.json /app/data/
 
 # 安装生产环境依赖
 RUN npm ci --only=production
@@ -50,5 +49,5 @@ USER node
 # 暴露端口
 EXPOSE 3000
 
-# 启动服务
-CMD ["node", "./server/index.js"] 
+# 启动服务（生产环境从 dist 提供前端静态资源）
+CMD ["node", "./dist-server/index.js"] 

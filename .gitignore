@@ -8,6 +8,7 @@
 
 # 生产环境构建文件
 /dist
+/dist-server
 /build
 
 # 环境变量文件
@@ -47,8 +48,11 @@ Thumbs.db
 # TypeScript 缓存
 *.tsbuildinfo
 
+# 运行时生成的访问统计（可复制 visitStats.example.json 为 visitStats.json）
+/data/visitStats.json
+
 # 其他
 .temp
 .cache
 dist-ssr
-*.local 
+*.local

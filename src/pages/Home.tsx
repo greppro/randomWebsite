@@ -45,8 +45,8 @@ const Home: React.FC = () => {
     <div className="home-container">
       <h1 className="home-title">点兵点将</h1>
       <div className="features-grid">
-        {features.map((feature, index) => (
-          <Link to={feature.path} key={index} className="feature-card">
+        {features.map((feature) => (
+          <Link to={feature.path} key={feature.path} className="feature-card">
             <h2>{feature.title}</h2>
             <p>{feature.description}</p>
           </Link>
