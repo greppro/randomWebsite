@@ -15,52 +15,27 @@
 
 .custom-random-container h1 {
   text-align: center;
-  color: #2196f3;
+  color: var(--accent-warm);
   margin-bottom: 2rem;
   font-size: 2.2rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
   padding-top: 3rem;
   margin-top: 0;
 }
 
-.back-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  background-color: #f8f9fa;
-  color: #2c3e50;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 100;
-}
-
-.back-button:before {
-  content: "←";
-  font-size: 1.2rem;
-  line-height: 1;
-}
-
-.back-button:hover {
-  background-color: #e9ecef;
-  transform: translateX(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.custom-random-action-card {
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--accent-warm);
 }
 
 .upload-section {
   text-align: center;
   margin-bottom: 2rem;
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .upload-section .ant-btn {
@@ -98,11 +73,11 @@
 .selected-item {
   font-size: 2.2rem;
   padding: 2rem 3rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background: rgba(201, 123, 90, 0.08);
+  border-radius: 16px;
+  box-shadow: var(--bento-shadow);
   display: inline-block;
-  color: var(--secondary-color);
+  color: var(--accent-warm);
   font-weight: bold;
   transition: all 0.3s ease;
   transform-style: preserve-3d;
@@ -130,12 +105,23 @@
   }
 }
 
-.data-list {
-  margin-top: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.data-list-wrapper {
+  padding: 0;
   overflow: hidden;
+  margin-top: 0;
+}
+
+.data-list {
+  margin-top: 0;
+  background: transparent;
+  border-radius: var(--bento-radius);
+  box-shadow: none;
+  overflow: hidden;
+  border: none;
+}
+
+.data-list .ant-card-inner {
+  border-radius: var(--bento-radius);
 }
 
 .data-list .ant-card-head {

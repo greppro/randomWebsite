@@ -66,50 +66,54 @@ const Food: React.FC = () => {
       <Link to="/" className="back-button">返回首页</Link>
       <h1>今天吃什么？</h1>
 
-      <div className="category-section">
-        <select 
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          <option value="全部">全部类别</option>
-          {foodData.map(category => (
-            <option key={category.name} value={category.name}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      <div className="bento-card food-action-card">
+        <div className="category-section">
+          <select 
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <option value="全部">全部类别</option>
+            {foodData.map(category => (
+              <option key={category.name} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="control-section">
-        <button 
-          onClick={getRandomFood}
-          disabled={isRolling}
-        >
-          开始选择
-        </button>
-      </div>
+        <div className="control-section">
+          <button 
+            onClick={getRandomFood}
+            disabled={isRolling}
+          >
+            开始选择
+          </button>
+        </div>
 
-      <div className="result-section">
-        {selectedFood && (
-          <div className={`selected-food ${isRolling ? 'rolling' : ''}`}>
-            {selectedFood}
-          </div>
-        )}
-      </div>
-
-      <div className="food-list">
-        {foodData.map(category => (
-          <div key={category.name} className="category-group">
-            <h2>{category.name}</h2>
-            <div className="food-items">
-              {category.items.map(item => (
-                <div key={item} className="food-item">
-                  {item}
-                </div>
-              ))}
+        <div className="result-section">
+          {selectedFood && (
+            <div className={`selected-food ${isRolling ? 'rolling' : ''}`}>
+              {selectedFood}
             </div>
-          </div>
-        ))}
+          )}
+        </div>
+      </div>
+
+      <div className="bento-card food-list-card">
+        <div className="food-list">
+          {foodData.map(category => (
+            <div key={category.name} className="category-group">
+              <h2>{category.name}</h2>
+              <div className="food-items">
+                {category.items.map(item => (
+                  <div key={item} className="food-item">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

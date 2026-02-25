@@ -303,7 +303,7 @@ const Lottery: React.FC = () => {
     }
 
     return (
-      <div className="content-section">
+      <div className="bento-card content-section">
         <div className="upload-section">
           <Button onClick={downloadTemplate} style={{ marginRight: 16 }}>
             下载Excel模板

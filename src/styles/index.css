@@ -1,8 +1,22 @@
 :root {
   --primary-color: #4a90e2;
   --secondary-color: #2c3e50;
-  --background-color: #f5f6fa;
+  --background-color: #f8f8f8;
   --text-color: #333;
+  --bento-radius: 20px;
+  --bento-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  --bento-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.06);
+  /* 少量强调色：蓝 / 暖橙 / 青绿，仅作点缀 */
+  --accent-blue: #4a90e2;
+  --accent-warm: #c97b5a;
+  --accent-mint: #5a9b8a;
+  /* 主页卡片 pastel 背景（参考 Bento 图） */
+  --pastel-blue-gray: #e8eef5;
+  --pastel-green: #e3f0e8;
+  --pastel-peach: #fceee6;
+  --pastel-lavender: #ede8f5;
+  --pastel-yellow: #faf3e0;
+  --pastel-pink: #fce8ec;
 }
 
 * {
@@ -52,14 +66,14 @@ input:focus, select:focus {
   align-items: center;
   gap: 0.5rem;
   padding: 0.6rem 1.2rem;
-  background-color: #f8f9fa;
+  background-color: #fff;
   color: #2c3e50;
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 500;
-  transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+  border: none;
+  box-shadow: var(--bento-shadow);
   position: fixed;
   top: 20px;
   left: 20px;
@@ -74,6 +88,15 @@ input:focus, select:focus {
 
 .back-button:hover {
   background-color: #e9ecef;
-  transform: translateX(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateX(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Bento 卡片基类：大圆角、柔阴影、白底，子页面可复用 */
+.bento-card {
+  background: #fff;
+  border-radius: var(--bento-radius);
+  box-shadow: var(--bento-shadow);
+  border: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 } 

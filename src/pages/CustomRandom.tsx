@@ -85,6 +85,7 @@ const CustomRandom: React.FC = () => {
       <h1>自定义随机</h1>
       
       <div className="content-section">
+        <div className="bento-card custom-random-action-card">
         <div className="upload-section">
           <Button onClick={downloadTemplate} style={{ marginRight: 16 }}>
             下载Excel模板
@@ -115,8 +116,10 @@ const CustomRandom: React.FC = () => {
             </div>
           </div>
         )}
+        </div>
 
         {data.length > 0 && (
+          <div className="bento-card data-list-wrapper">
           <Card type="inner" title="当前数据列表" className="data-list">
             <List
               size="small"
@@ -125,6 +128,7 @@ const CustomRandom: React.FC = () => {
               renderItem={item => <List.Item>{item}</List.Item>}
             />
           </Card>
+          </div>
         )}
       </div>
     </div>

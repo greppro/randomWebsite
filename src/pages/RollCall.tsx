@@ -148,28 +148,30 @@ const RollCall: React.FC = () => {
       <Link to="/" className="back-button">返回首页</Link>
       <h1>随机点名系统</h1>
 
-      <div className="mode-switch">
-        <button 
-          className={!seatMode ? 'active' : ''} 
-          onClick={() => {
-            setSeatMode(false);
-            setSelectedSeat(null);
-          }}
-        >
-          姓名点名
-        </button>
-        <button 
-          className={seatMode ? 'active' : ''} 
-          onClick={() => {
-            setSeatMode(true);
-            setSelectedStudent(null);
-          }}
-        >
-          座位点名
-        </button>
+      <div className="bento-card roll-call-mode-card">
+        <div className="mode-switch">
+          <button 
+            className={!seatMode ? 'active' : ''} 
+            onClick={() => {
+              setSeatMode(false);
+              setSelectedSeat(null);
+            }}
+          >
+            姓名点名
+          </button>
+          <button 
+            className={seatMode ? 'active' : ''} 
+            onClick={() => {
+              setSeatMode(true);
+              setSelectedStudent(null);
+            }}
+          >
+            座位点名
+          </button>
+        </div>
       </div>
 
-      <div className="control-panel">
+      <div className="bento-card control-panel">
         {!seatMode ? (
           <>
             <div className="input-section">

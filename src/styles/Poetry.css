@@ -15,18 +15,24 @@
 
 .poetry-container h1 {
   text-align: center;
-  color: #2196f3;
+  color: var(--accent-blue);
   margin-bottom: 2rem;
   font-size: 2.2rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
   padding-top: 3rem;
   margin-top: 0;
+}
+
+.poetry-controls-card {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--accent-blue);
 }
 
 .controls {
   display: flex;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   justify-content: center;
 }
 
@@ -75,12 +81,12 @@
 .poem-paper {
   background-color: #fff9e6;
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: var(--bento-radius);
+  box-shadow: var(--bento-shadow);
   position: relative;
   margin: 2rem auto;
   max-width: 600px;
-  border: 1px solid #d4b895;
+  border: none;
 }
 
 .poem-paper::before {
@@ -93,7 +99,7 @@
   background: linear-gradient(to right, #d4b895 50%, transparent 50%);
   background-size: 4px 100%;
   opacity: 0.3;
-  border-radius: 8px 8px 0 0;
+  border-radius: var(--bento-radius) var(--bento-radius) 0 0;
 }
 
 .poem-display h2 {

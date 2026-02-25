@@ -308,14 +308,17 @@
   padding: 2rem;
   width: 100%;
   flex: 1;
+  border-radius: var(--bento-radius);
+  box-shadow: var(--bento-shadow);
+  border-left: 4px solid var(--accent-mint);
 }
 
 .lottery-container h1 {
   text-align: center;
-  color: #2196f3;
+  color: var(--accent-mint);
   margin-bottom: 2rem;
   font-size: 2.2rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
   padding-top: 3rem;
   margin-top: 0;
 }

@@ -6,40 +6,150 @@
 
 .home-title {
   text-align: center;
-  color: #333;
+  color: #1d1d1f;
   font-size: 2.5rem;
-  margin-bottom: 3rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
 }
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 }
 
 .feature-card {
-  background: #fff;
-  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
   padding: 1.5rem;
   text-decoration: none;
-  color: #333;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: inherit;
+  border-radius: var(--bento-radius);
+  box-shadow: var(--bento-shadow);
+  border: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  text-align: left;
+  position: relative;
 }
 
 .feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: var(--bento-shadow-hover);
+}
+
+/* 每张卡片独立 pastel 背景 */
+.feature-card.card-pastel-blue-gray { background: var(--pastel-blue-gray); }
+.feature-card.card-pastel-green { background: var(--pastel-green); }
+.feature-card.card-pastel-peach { background: var(--pastel-peach); }
+.feature-card.card-pastel-lavender { background: var(--pastel-lavender); }
+.feature-card.card-pastel-yellow { background: var(--pastel-yellow); }
+.feature-card.card-pastel-pink { background: var(--pastel-pink); }
+
+.feature-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 14px;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+}
+
+.feature-card-icon .anticon {
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.feature-card.card-pastel-blue-gray .feature-card-icon {
+  background: linear-gradient(135deg, #6b8cb5, #8ba3c7);
+}
+.feature-card.card-pastel-green .feature-card-icon {
+  background: linear-gradient(135deg, #5a9b7a, #7ab898);
+}
+.feature-card.card-pastel-peach .feature-card-icon {
+  background: linear-gradient(135deg, #d4956a, #e4a87a);
+}
+.feature-card.card-pastel-lavender .feature-card-icon {
+  background: linear-gradient(135deg, #8b7aa8, #a89bc4);
+}
+.feature-card.card-pastel-yellow .feature-card-icon {
+  background: linear-gradient(135deg, #c9a84a, #d4b86a);
+}
+.feature-card.card-pastel-pink .feature-card-icon {
+  background: linear-gradient(135deg, #c97a8a, #d99aa8);
 }
 
 .feature-card h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
-  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1d1d1f;
 }
 
 .feature-card p {
   margin: 0;
-  color: #666;
+  font-size: 0.9rem;
+  color: #5c5c5e;
   line-height: 1.5;
-} 
+}
+
+.feature-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+.feature-card-tag {
+  font-size: 0.7rem;
+  color: #6b7280;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Bento 占位：错落网格 */
+.bento-poetry {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.bento-roll-call,
+.bento-food,
+.bento-knowledge,
+.bento-coin-flip {
+  /* 1x1 默认 */
+}
+
+.bento-custom-random,
+.bento-lottery {
+  grid-column: span 2;
+}
+
+@media (max-width: 900px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bento-poetry {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+  .bento-custom-random,
+  .bento-lottery {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 500px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  .bento-poetry,
+  .bento-custom-random,
+  .bento-lottery {
+    grid-column: span 1;
+  }
+}

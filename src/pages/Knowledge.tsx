@@ -105,52 +105,55 @@ const Knowledge: React.FC = () => {
       <Link to="/" className="back-button">返回首页</Link>
       <h1>知识点抽查</h1>
 
-      <div className="filter-section">
-        <select
-          value={selectedSubject}
-          onChange={(e) => {
-            setSelectedSubject(e.target.value);
-            setSelectedChapter('全部');
-          }}
-        >
-          <option value="全部">所有科目</option>
-          {subjectsData.map(subject => (
-            <option key={subject.name} value={subject.name}>
-              {subject.name}
-            </option>
-          ))}
-        </select>
+      <div className="bento-card knowledge-action-card">
+        <div className="filter-section">
+          <select
+            value={selectedSubject}
+            onChange={(e) => {
+              setSelectedSubject(e.target.value);
+              setSelectedChapter('全部');
+            }}
+          >
+            <option value="全部">所有科目</option>
+            {subjectsData.map(subject => (
+              <option key={subject.name} value={subject.name}>
+                {subject.name}
+              </option>
+            ))}
+          </select>
 
-        <select
-          value={selectedChapter}
-          onChange={(e) => setSelectedChapter(e.target.value)}
-        >
-          <option value="全部">所有单元</option>
-          {getAvailableChapters().map(chapter => (
-            <option key={chapter.title} value={chapter.title}>
-              {chapter.title}
-            </option>
-          ))}
-        </select>
+          <select
+            value={selectedChapter}
+            onChange={(e) => setSelectedChapter(e.target.value)}
+          >
+            <option value="全部">所有单元</option>
+            {getAvailableChapters().map(chapter => (
+              <option key={chapter.title} value={chapter.title}>
+                {chapter.title}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="control-section">
+          <button
+            onClick={startRandomSelection}
+            disabled={isRolling || getAvailablePoints().length === 0}
+          >
+            开始抽查
+          </button>
+        </div>
+
+        <div className="result-section">
+          {selectedPoint && (
+            <div className={`selected-point ${isRolling ? 'rolling' : ''}`}>
+              {selectedPoint}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="control-section">
-        <button
-          onClick={startRandomSelection}
-          disabled={isRolling || getAvailablePoints().length === 0}
-        >
-          开始抽查
-        </button>
-      </div>
-
-      <div className="result-section">
-        {selectedPoint && (
-          <div className={`selected-point ${isRolling ? 'rolling' : ''}`}>
-            {selectedPoint}
-          </div>
-        )}
-      </div>
-
+      <div className="bento-card knowledge-list-card">
       <div className="knowledge-list">
         {subjectsData.map(subject => (
           <div 
@@ -175,6 +178,7 @@ const Knowledge: React.FC = () => {
             ))}
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

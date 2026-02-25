@@ -7,7 +7,7 @@ const CoinFlipPage: React.FC = () => {
     return (
         <div className="coin-flip-page">
             <Link to="/" className="back-button">返回首页</Link>
-            <div className="content">
+            <div className="bento-card coin-flip-content">
                 <h1>抛硬币</h1>
                 <p className="description">
                     在犹豫不决时，不妨试试让命运来做选择。

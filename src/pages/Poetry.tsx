@@ -68,22 +68,24 @@ const Poetry: React.FC = () => {
         <Link to="/" className="back-button">返回首页</Link>
         <h1>随机古诗词</h1>
         
-        <div className="controls">
-          <button 
-            onClick={isRolling ? stopRolling : startRolling}
-            className={isRolling ? 'rolling' : ''}
-          >
-            {isRolling ? '停止随机' : '开始随机'}
-          </button>
-          <button onClick={togglePoemDisplay}>
-            {showMode === 'full' ? '仅显示上句' : 
-             showMode === 'first' ? '仅显示下句' : '显示全文'}
-          </button>
+        <div className="bento-card poetry-controls-card">
+          <div className="controls">
+            <button 
+              onClick={isRolling ? stopRolling : startRolling}
+              className={isRolling ? 'rolling' : ''}
+            >
+              {isRolling ? '停止随机' : '开始随机'}
+            </button>
+            <button onClick={togglePoemDisplay}>
+              {showMode === 'full' ? '仅显示上句' : 
+               showMode === 'first' ? '仅显示下句' : '显示全文'}
+            </button>
+          </div>
         </div>
 
         {currentPoem && (
           <div className={`poem-display ${isRolling ? 'rolling' : ''}`}>
-            <div className="poem-paper">
+            <div className="bento-card poem-paper">
               <h2>{currentPoem.title}</h2>
               <p className="author">{currentPoem.author}</p>
               <div className="poem-content">
